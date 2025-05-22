@@ -1,0 +1,165 @@
+{
+  "sections": [
+    {
+      "id": "introduction",
+      "title_ar": "المقدمة",
+      "title_en": "Introduction",
+      "patterns": [
+        {
+          "type": "purpose",
+          "examples_ar": [
+            "يهدف هذا العرض إلى...",
+            "نقدم هذا المقترح استجابةً لـ...",
+            "الغرض من هذا المستند هو..."
+          ],
+          "examples_en": [
+            "This proposal aims to...",
+            "We present this proposal in response to...",
+            "The purpose of this document is to..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goals",
+      "title_ar": "الأهداف",
+      "title_en": "Goals",
+      "patterns": [
+        {
+          "type": "target",
+          "examples_ar": [
+            "نهدف من خلال هذا المشروع إلى تحقيق...",
+            "من أبرز أهداف هذا المقترح...",
+            "الأهداف الرئيسية تتضمن..."
+          ],
+          "examples_en": [
+            "This project aims to achieve...",
+            "The main goals of this proposal are...",
+            "Key objectives include..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "methodology",
+      "title_ar": "المنهجية",
+      "title_en": "Methodology",
+      "patterns": [
+        {
+          "type": "approach",
+          "examples_ar": [
+            "سنعتمد في هذا المشروع على منهجية...",
+            "المنهجية المقترحة تعتمد على...",
+            "نستخدم مقاربة..."
+          ],
+          "examples_en": [
+            "We will follow a methodology based on...",
+            "The proposed approach relies on...",
+            "Our method involves..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "title_ar": "الفريق التنفيذي",
+      "title_en": "Execution Team",
+      "patterns": [
+        {
+          "type": "team_intro",
+          "examples_ar": [
+            "يتكون الفريق من خبراء في...",
+            "الفريق التنفيذي يضم مختصين في...",
+            "سيشرف على تنفيذ المشروع فريق مكون من..."
+          ],
+          "examples_en": [
+            "The team consists of experts in...",
+            "Our execution team includes specialists in...",
+            "The project will be led by a team composed of..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "title_ar": "الجدول الزمني",
+      "title_en": "Timeline",
+      "patterns": [
+        {
+          "type": "schedule",
+          "examples_ar": [
+            "سيتم تنفيذ المشروع على مدار...",
+            "يتوزع العمل على مراحل تبدأ بـ...",
+            "الجدول الزمني المقترح يتضمن..."
+          ],
+          "examples_en": [
+            "The project will be executed over...",
+            "Work will be distributed across phases starting with...",
+            "The proposed timeline includes..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "deliverables",
+      "title_ar": "المخرجات",
+      "title_en": "Deliverables",
+      "patterns": [
+        {
+          "type": "output",
+          "examples_ar": [
+            "سيتم تسليم التقارير التالية...",
+            "تشمل المخرجات النهائية...",
+            "المخرجات الرئيسية للمشروع هي..."
+          ],
+          "examples_en": [
+            "The following reports will be delivered...",
+            "The final deliverables include...",
+            "The main outputs of the project are..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kpis",
+      "title_ar": "مؤشرات الأداء",
+      "title_en": "KPIs",
+      "patterns": [
+        {
+          "type": "measurement",
+          "examples_ar": [
+            "سيتم قياس النجاح من خلال...",
+            "تشمل مؤشرات الأداء الرئيسية...",
+            "سنراقب الأداء باستخدام المعايير التالية..."
+          ],
+          "examples_en": [
+            "Success will be measured by...",
+            "Key performance indicators include...",
+            "We will monitor performance using the following criteria..."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "recommendations",
+      "title_ar": "التوصيات",
+      "title_en": "Recommendations",
+      "patterns": [
+        {
+          "type": "suggestion",
+          "examples_ar": [
+            "نوصي باتباع الأساليب التالية...",
+            "من التوصيات المقترحة...",
+            "يوصى بتنفيذ الخطوات التالية..."
+          ],
+          "examples_en": [
+            "We recommend the following approaches...",
+            "Suggested recommendations include...",
+            "It is advised to implement the following steps..."
+          ]
+        }
+      ]
+    }
+  ]
+}
+
