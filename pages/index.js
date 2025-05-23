@@ -126,6 +126,16 @@ export default function Home() {
           }}
         >
           <h1 style={{ margin: 0, fontSize: '1.25rem', flex: 1 }}>{t.title}</h1>
+          <a
+            href="/landing"
+            style={{
+              marginRight: language === 'ar' ? 0 : '0.5rem',
+              marginLeft: language === 'ar' ? '0.5rem' : 0,
+              textDecoration: 'underline',
+            }}
+          >
+            {language === 'ar' ? 'الواجهة' : 'Landing'}
+          </a>
           <button
             onClick={() => setDarkMode(!darkMode)}
             style={{
