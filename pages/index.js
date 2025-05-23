@@ -1,3 +1,4 @@
+import React from 'react';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
@@ -108,17 +109,6 @@ export default function Home() {
     <>
       <Head>
         <title>{t.title}</title>
-        {language === 'ar' ? (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap"
-            rel="stylesheet"
-          />
-        ) : (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
-            rel="stylesheet"
-          />
-        )}
       </Head>
       <style jsx>{`
         @keyframes spin {
