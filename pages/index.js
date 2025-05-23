@@ -46,29 +46,27 @@ export default function Home() {
           <div>
             {(results.patterns || []).map((item) => {
               const existsInText = text.includes(item.pattern);
+              const borderColor = existsInText ? '#4ade80' : '#f87171';
+              const icon = existsInText ? '✅' : '❌';
               return (
                 <div
                   key={item.id}
                   style={{
-                    border: '1px solid #ccc',
+                    border: `2px solid ${borderColor}`,
                     padding: '1rem',
                     borderRadius: '4px',
                     marginTop: '1rem',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.25rem',
                   }}
                 >
-                  <p>
-                    <strong>Phrase:</strong> {item.pattern}
-                  </p>
-                  <p>
-                    <strong>Matched:</strong>{' '}
-                    {existsInText ? 'true' : 'false'}
-                  </p>
-                  <p>
-                    <strong>Pattern ID:</strong> {item.id}
-                  </p>
-                  <p>
-                    <strong>Category:</strong> {item.category}
-                  </p>
+                  <span style={{ fontSize: '1.25rem' }}>{icon}</span>
+                  <span style={{ fontWeight: 'bold' }}>{item.pattern}</span>
+                  <span style={{ fontSize: '0.875rem', color: '#555' }}>
+                    ID: {item.id} | Category: {item.category}
+                  </span>
                 </div>
               );
             })}
