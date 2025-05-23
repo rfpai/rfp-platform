@@ -1,7 +1,8 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const [lang, setLang] = useState('en');
   const [text, setText] = useState('');
   const [domain, setDomain] = useState('');
   const [category, setCategory] = useState('');
@@ -12,6 +13,37 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && navigator.language) {
+      if (navigator.language.startsWith('ar')) {
+        setLang('ar');
+      }
+    }
+  }, []);
+
+  const translations = {
+    en: {
+      title: 'RFP Assistant',
+      domain: 'Domain',
+      category: 'Category',
+      text: 'Enter text',
+      analyze: 'Analyze',
+      copy: 'Copy Results',
+      download: 'Download PDF',
+    },
+    ar: {
+      title: 'منصة إعداد العروض الفنية',
+      domain: 'نطاق العمل',
+      category: 'اختر الفئة',
+      text: 'أدخل النص',
+      analyze: 'تحليل',
+      copy: 'نسخ النتائج',
+      download: 'تحميل PDF',
+    },
+  };
+
+  const t = translations[lang];
+
   const TIP_TEXT =
     '🧠 Tip: Consider mentioning your target audience or expected outcomes.';
 
@@ -19,7 +51,8 @@ export default function Home() {
     background: darkMode ? '#222' : '#f9f9f9',
     color: darkMode ? '#fff' : '#000',
     minHeight: '100vh',
-    fontFamily: "'Cairo', sans-serif",
+    fontFamily: lang === 'ar' ? "'Tajawal', sans-serif" : "'Inter', sans-serif",
+    direction: lang === 'ar' ? 'rtl' : 'ltr',
   };
 
   const cardBackground = darkMode ? '#333' : '#fff';
@@ -65,11 +98,18 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>منصة إعداد العروض الفنية</title>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cairo&display=swap"
-          rel="stylesheet"
-        />
+        <title>{t.title}</title>
+        {lang === 'ar' ? (
+          <link
+            href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap"
+            rel="stylesheet"
+          />
+        ) : (
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+            rel="stylesheet"
+          />
+        )}
       </Head>
       <style jsx>{`
         @keyframes spin {
@@ -86,9 +126,7 @@ export default function Home() {
             alignItems: 'center',
           }}
         >
-          <h1 style={{ margin: 0, fontSize: '1.25rem', flex: 1 }}>
-            منصة إعداد العروض الفنية
-          </h1>
+          <h1 style={{ margin: 0, fontSize: '1.25rem', flex: 1 }}>{t.title}</h1>
           <button
             onClick={() => setDarkMode(!darkMode)}
             style={{
@@ -102,11 +140,11 @@ export default function Home() {
             {darkMode ? '🌞' : '🌙'}
           </button>
         </nav>
-        <main style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem 1rem' }}>
+        <main style={{ maxWidth: '800px', margin: '2rem auto', padding: '0 1rem' }}>
           <div
             style={{
               background: cardBackground,
-              padding: '1.5rem',
+              padding: '2rem',
               borderRadius: '8px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
               margin: '0 auto',
@@ -117,58 +155,67 @@ export default function Home() {
               onKeyDown={handleKeyDown}
               style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
             >
-            <select
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-            style={{
-              padding: '0.5rem',
-              borderRadius: '4px',
-              background: cardBackground,
-              color: darkMode ? '#fff' : '#000',
-            }}
-            >
-              <option value="">Select Domain</option>
-              <option value="Marketing">Marketing</option>
-              <option value="Public Relations">Public Relations</option>
-            </select>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              style={{
-                padding: '0.5rem',
-                borderRadius: '4px',
-                background: cardBackground,
-                color: darkMode ? '#fff' : '#000',
-              }}
-            >
-              <option value="">اختر الفئة</option>
-              <option value="نطاق العمل">نطاق العمل</option>
-              <option value="الأهداف">الأهداف</option>
-            </select>
-            <textarea
-              placeholder="Text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              style={{
-                padding: '0.5rem',
-                borderRadius: '4px',
-                background: cardBackground,
-                color: darkMode ? '#fff' : '#000',
-              }}
-            />
-            <button
-              type="submit"
-              style={{
-                padding: '0.75rem',
-                background: '#2563eb',
-                color: '#fff',
-                borderRadius: '4px',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-          >
-            Analyze
-          </button>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                {t.domain}
+                <select
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  style={{
+                    padding: '0.5rem',
+                    borderRadius: '4px',
+                    background: cardBackground,
+                    color: darkMode ? '#fff' : '#000',
+                  }}
+                >
+                  <option value="">{t.domain}</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Public Relations">Public Relations</option>
+                </select>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                {t.category}
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  style={{
+                    padding: '0.5rem',
+                    borderRadius: '4px',
+                    background: cardBackground,
+                    color: darkMode ? '#fff' : '#000',
+                  }}
+                >
+                  <option value="">{t.category}</option>
+                  <option value="نطاق العمل">نطاق العمل</option>
+                  <option value="الأهداف">الأهداف</option>
+                </select>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                {t.text}
+                <textarea
+                  placeholder={t.text}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  style={{
+                    padding: '0.5rem',
+                    borderRadius: '4px',
+                    background: cardBackground,
+                    color: darkMode ? '#fff' : '#000',
+                  }}
+                />
+              </label>
+              <button
+                type="submit"
+                style={{
+                  padding: '0.75rem',
+                  background: '#2563eb',
+                  color: '#fff',
+                  borderRadius: '4px',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                {t.analyze}
+              </button>
             </form>
           </div>
           {loading && (
@@ -195,13 +242,13 @@ export default function Home() {
                   onClick={() => navigator.clipboard.writeText(summary)}
                   style={{ padding: '0.5rem', borderRadius: '4px', cursor: 'pointer' }}
                 >
-                  📋 Copy All Results
+                  {t.copy}
                 </button>
                 <button
                   onClick={() => alert('PDF download coming soon!')}
                   style={{ padding: '0.5rem', borderRadius: '4px', cursor: 'pointer' }}
                 >
-                  ⬇️ Download as PDF
+                  {t.download}
                 </button>
               </div>
               <div style={{ marginTop: '1rem' }}>
