@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [language, setLanguage] = useState('en');
@@ -30,42 +29,51 @@ export default function Home() {
     }
   }, [language]);
 
-  const translations = {
+  const t = {
     en: {
       title: 'RFP Assistant',
       domain: 'Domain',
       category: 'Category',
-      text: 'Enter text',
+      text: 'Text',
       analyze: 'Analyze',
-      copy: 'Copy Results',
-      download: 'Download PDF',
+      matched: 'Matched Results',
+      unmatched: 'Unmatched Results',
+      tip: 'Tip: consider clarifying benefits or target audience.',
+      summary: (m, t) => `${m} of ${t} sentences matched.`,
     },
     ar: {
       title: 'منصة إعداد العروض الفنية',
       domain: 'نطاق العمل',
-      category: 'اختر الفئة',
-      text: 'أدخل النص',
+      category: 'الفئة',
+      text: 'نص التحليل',
       analyze: 'تحليل',
-      copy: 'نسخ النتائج',
-      download: 'تحميل PDF',
+      matched: 'العبارات المطابقة',
+      unmatched: 'العبارات غير المطابقة',
+      tip: '💡 نصيحة: يفضل توضيح الفائدة أو الجمهور المستهدف.',
+      summary: (m, t) => `تمت مطابقة ${m} من ${t} جملة`,
     },
-  };
-
-  const t = translations[language];
-
-  const TIP_TEXT =
-    '🧠 Tip: Consider mentioning your target audience or expected outcomes.';
+  }[language];
 
   const containerStyle = {
-    background: darkMode ? '#222' : '#f9f9f9',
-    color: darkMode ? '#fff' : '#000',
+    background: darkMode ? '#111' : '#f0f0f0',
+    color: darkMode ? '#eee' : '#111',
     minHeight: '100vh',
-    fontFamily:
-      language === 'ar' ? "'Tajawal', sans-serif" : "'Inter', sans-serif",
+    fontFamily: language === 'ar' ? 'Tajawal, sans-serif' : 'Inter, sans-serif',
     direction: language === 'ar' ? 'rtl' : 'ltr',
+    transition: 'background 0.3s, color 0.3s',
   };
 
-  const cardBackground = darkMode ? '#333' : '#fff';
+  const cardStyle = {
+    background: darkMode ? '#1f2937' : '#ffffff',
+    maxWidth: '800px',
+    width: '100%',
+    margin: '2rem auto',
+    padding: '2rem',
+    borderRadius: '12px',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+  };
+
+  const analyzeBtnClass = 'analyze-btn';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,133 +113,113 @@ export default function Home() {
     }
   };
 
+  const matchedSentences = sentences.filter((s) =>
+    (results?.patterns || []).some((p) => s.includes(p.pattern))
+  );
+  const unmatchedSentences = sentences.filter(
+    (s) => !(results?.patterns || []).some((p) => s.includes(p.pattern))
+  );
+
   return (
     <>
       <Head>
         <title>{t.title}</title>
       </Head>
       <style jsx>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .analyze-btn {
+          background: linear-gradient(to right, #3b82f6, #2563eb);
+          border: none;
+          border-radius: 8px;
+          color: #fff;
+          padding: 0.75rem;
+          cursor: pointer;
+          width: 100%;
+          transition: opacity 0.3s;
         }
+        .analyze-btn:hover { opacity: 0.9; }
       `}</style>
       <div style={containerStyle}>
         <nav
           style={{
-            background: darkMode ? '#333' : '#fff',
-            padding: '1rem 2rem',
+            background: darkMode ? '#1f2937' : '#ffffff',
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            padding: '0.75rem 1rem',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <h1 style={{ margin: 0, fontSize: '1.25rem', flex: 1 }}>{t.title}</h1>
+          <h1 style={{ flex: 1, margin: 0, fontSize: '1.25rem' }}>{t.title}</h1>
           <button
             onClick={() => setDarkMode(!darkMode)}
             style={{
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
-              border: '1px solid',
+              border: 'none',
               background: 'transparent',
               cursor: 'pointer',
+              fontSize: '1.25rem',
+              marginInlineStart: '0.5rem',
             }}
           >
-            {darkMode ? '🌞' : '🌙'}
+            <span
+              style={{
+                display: 'inline-block',
+                transition: 'transform 0.3s',
+                transform: darkMode ? 'rotate(180deg)' : 'rotate(0deg)',
+              }}
+            >
+              {darkMode ? '🌞' : '🌙'}
+            </span>
           </button>
           <button
-            onClick={() =>
-              setLanguage(language === 'en' ? 'ar' : 'en')
-            }
+            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
             style={{
-              marginLeft: '0.5rem',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '4px',
+              marginInlineStart: '0.5rem',
               border: '1px solid',
               background: 'transparent',
+              borderRadius: '6px',
+              padding: '0.25rem 0.5rem',
               cursor: 'pointer',
             }}
           >
             {language === 'en' ? 'العربية' : 'English'}
           </button>
         </nav>
-        <main style={{ maxWidth: '800px', margin: '2rem auto', padding: '0 1rem' }}>
-          <div
-            style={{
-              background: cardBackground,
-              padding: '2rem',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              margin: '0 auto',
-            }}
+        <main style={cardStyle}>
+          <form
+            onSubmit={handleSubmit}
+            onKeyDown={handleKeyDown}
+            style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
           >
-            <form
-              onSubmit={handleSubmit}
-              onKeyDown={handleKeyDown}
-              style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-            >
-              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                {t.domain}
-                <select
-                  value={domain}
-                  onChange={(e) => setDomain(e.target.value)}
-                  style={{
-                    padding: '0.5rem',
-                    borderRadius: '4px',
-                    background: cardBackground,
-                    color: darkMode ? '#fff' : '#000',
-                  }}
-                >
-                  <option value="">{t.domain}</option>
-                  <option value="Marketing">Marketing</option>
-                  <option value="Public Relations">Public Relations</option>
-                </select>
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                {t.category}
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  style={{
-                    padding: '0.5rem',
-                    borderRadius: '4px',
-                    background: cardBackground,
-                    color: darkMode ? '#fff' : '#000',
-                  }}
-                >
-                  <option value="">{t.category}</option>
-                  <option value="نطاق العمل">نطاق العمل</option>
-                  <option value="الأهداف">الأهداف</option>
-                </select>
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                {t.text}
-                <textarea
-                  placeholder={t.text}
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  style={{
-                    padding: '0.5rem',
-                    borderRadius: '4px',
-                    background: cardBackground,
-                    color: darkMode ? '#fff' : '#000',
-                  }}
-                />
-              </label>
-              <button
-                type="submit"
-                style={{
-                  padding: '0.75rem',
-                  background: '#2563eb',
-                  color: '#fff',
-                  borderRadius: '4px',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                {t.analyze}
-              </button>
-            </form>
-          </div>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              {t.domain}
+              <input
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
+                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}
+              />
+            </label>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              {t.category}
+              <input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc' }}
+              />
+            </label>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              {t.text}
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={t.text}
+                style={{ padding: '0.5rem', borderRadius: '6px', border: '1px solid #ccc', minHeight: '100px' }}
+              />
+            </label>
+            <button type="submit" className={analyzeBtnClass} disabled={loading}>
+              {t.analyze}
+            </button>
+          </form>
+
           {loading && (
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
               <div
@@ -246,90 +234,52 @@ export default function Home() {
               />
             </div>
           )}
+
           {results && (
-            <>
-              <p style={{ marginTop: '1rem' }}>
-                {`✅ ${matchedCount} matched out of ${sentences.length} sentences analyzed.`}
-              </p>
-              <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
-                <button
-                  onClick={() => navigator.clipboard.writeText(summary)}
-                  style={{ padding: '0.5rem', borderRadius: '4px', cursor: 'pointer' }}
+            <div style={{ marginTop: '1.5rem' }}>
+              <p>{t.summary(matchedCount, sentences.length)}</p>
+
+              {matchedSentences.map((sentence, idx) => (
+                <div
+                  key={`m-${idx}`}
+                  style={{
+                    background: '#dcfce7',
+                    border: '1px solid #bbf7d0',
+                    padding: '0.75rem',
+                    borderRadius: '8px',
+                    marginTop: '0.5rem',
+                  }}
                 >
-                  {t.copy}
-                </button>
-                <button
-                  onClick={() => alert('PDF download coming soon!')}
-                  style={{ padding: '0.5rem', borderRadius: '4px', cursor: 'pointer' }}
+                  ✅ {sentence}
+                </div>
+              ))}
+
+              {unmatchedSentences.map((sentence, idx) => (
+                <div
+                  key={`u-${idx}`}
+                  style={{
+                    background: '#fee2e2',
+                    border: '1px solid #fecaca',
+                    padding: '0.75rem',
+                    borderRadius: '8px',
+                    marginTop: '0.5rem',
+                  }}
                 >
-                  {t.download}
-                </button>
-              </div>
-              <div style={{ marginTop: '1rem' }}>
-                <h3 style={{ color: '#16a34a', marginBottom: '0.5rem' }}>Matched Results</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {sentences
-                    .filter((s) =>
-                      (results.patterns || []).some((p) => s.includes(p.pattern))
-                    )
-                    .map((sentence, idx) => {
-                      const matches = (results.patterns || []).filter((p) =>
-                        sentence.includes(p.pattern)
-                      );
-                      return (
-                        <div
-                          key={`m-${idx}`}
-                          style={{
-                            border: '1px solid #4ade80',
-                            padding: '1rem',
-                            borderRadius: '8px',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                            background: cardBackground,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '0.25rem',
-                          }}
-                        >
-                          <span style={{ fontWeight: 'bold' }}>{sentence}</span>
-                          {matches.map((m) => (
-                            <span key={m.id}>✅ {m.pattern}</span>
-                          ))}
-                        </div>
-                      );
-                    })}
+                  ❌ {sentence}
+                  <div
+                    style={{
+                      background: '#fef9c3',
+                      padding: '0.5rem',
+                      borderRadius: '6px',
+                      marginTop: '0.5rem',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    {t.tip}
+                  </div>
                 </div>
-              </div>
-              <div style={{ marginTop: '2rem' }}>
-                <h3 style={{ color: '#dc2626', marginBottom: '0.5rem' }}>
-                  Unmatched Results with tips
-                </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {sentences
-                    .filter(
-                      (s) =>
-                        !(results.patterns || []).some((p) => s.includes(p.pattern))
-                    )
-                    .map((sentence, idx) => (
-                      <div
-                        key={`u-${idx}`}
-                        style={{
-                          border: '1px solid #f87171',
-                          padding: '1rem',
-                          borderRadius: '8px',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                          background: cardBackground,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '0.25rem',
-                        }}
-                      >
-                        <span style={{ fontWeight: 'bold' }}>{sentence}</span>
-                        <span style={{ fontSize: '0.875rem' }}>{TIP_TEXT}</span>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </>
+              ))}
+            </div>
           )}
         </main>
       </div>
