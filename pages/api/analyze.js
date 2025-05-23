@@ -1,3 +1,4 @@
+import { getPatternsByDomainAndCategory } from '../../utils/loadStructurePatterns';
 const { analyzeText } = require('@/lib/lang/analyzer');
 
 export default function handler(req, res) {
