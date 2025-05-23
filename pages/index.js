@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const [lang, setLang] = useState('en');
+  const [language, setLanguage] = useState('en');
   const [text, setText] = useState('');
   const [domain, setDomain] = useState('');
   const [category, setCategory] = useState('');
@@ -14,12 +14,20 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (typeof navigator !== 'undefined' && navigator.language) {
-      if (navigator.language.startsWith('ar')) {
-        setLang('ar');
-      }
+    if (typeof window === 'undefined') return;
+    const stored = window.localStorage.getItem('language');
+    if (stored) {
+      setLanguage(stored);
+    } else if (navigator.language && navigator.language.startsWith('ar')) {
+      setLanguage('ar');
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('language', language);
+    }
+  }, [language]);
 
   const translations = {
     en: {
@@ -42,7 +50,7 @@ export default function Home() {
     },
   };
 
-  const t = translations[lang];
+  const t = translations[language];
 
   const TIP_TEXT =
     '🧠 Tip: Consider mentioning your target audience or expected outcomes.';
@@ -51,8 +59,9 @@ export default function Home() {
     background: darkMode ? '#222' : '#f9f9f9',
     color: darkMode ? '#fff' : '#000',
     minHeight: '100vh',
-    fontFamily: lang === 'ar' ? "'Tajawal', sans-serif" : "'Inter', sans-serif",
-    direction: lang === 'ar' ? 'rtl' : 'ltr',
+    fontFamily:
+      language === 'ar' ? "'Tajawal', sans-serif" : "'Inter', sans-serif",
+    direction: language === 'ar' ? 'rtl' : 'ltr',
   };
 
   const cardBackground = darkMode ? '#333' : '#fff';
@@ -99,7 +108,7 @@ export default function Home() {
     <>
       <Head>
         <title>{t.title}</title>
-        {lang === 'ar' ? (
+        {language === 'ar' ? (
           <link
             href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap"
             rel="stylesheet"
@@ -138,6 +147,21 @@ export default function Home() {
             }}
           >
             {darkMode ? '🌞' : '🌙'}
+          </button>
+          <button
+            onClick={() =>
+              setLanguage(language === 'en' ? 'ar' : 'en')
+            }
+            style={{
+              marginLeft: '0.5rem',
+              padding: '0.25rem 0.5rem',
+              borderRadius: '4px',
+              border: '1px solid',
+              background: 'transparent',
+              cursor: 'pointer',
+            }}
+          >
+            {language === 'en' ? 'العربية' : 'English'}
           </button>
         </nav>
         <main style={{ maxWidth: '800px', margin: '2rem auto', padding: '0 1rem' }}>
