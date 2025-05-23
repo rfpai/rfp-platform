@@ -25,16 +25,16 @@ export default function Home() {
       </Head>
       <main>
         <form onSubmit={handleSubmit}>
-          <input
-            placeholder="Domain"
-            value={domain}
-            onChange={(e) => setDomain(e.target.value)}
-          />
-          <input
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
+          <select value={domain} onChange={(e) => setDomain(e.target.value)}>
+            <option value="">Select Domain</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Public Relations">Public Relations</option>
+          </select>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">اختر الفئة</option>
+            <option value="نطاق العمل">نطاق العمل</option>
+            <option value="الأهداف">الأهداف</option>
+          </select>
           <textarea
             placeholder="Text"
             value={text}
