@@ -42,7 +42,38 @@ export default function Home() {
           />
           <button type="submit">Analyze</button>
         </form>
-        {results && <pre>{JSON.stringify(results, null, 2)}</pre>}
+        {results && (
+          <div>
+            {(results.patterns || []).map((item) => {
+              const existsInText = text.includes(item.pattern);
+              return (
+                <div
+                  key={item.id}
+                  style={{
+                    border: '1px solid #ccc',
+                    padding: '1rem',
+                    borderRadius: '4px',
+                    marginTop: '1rem',
+                  }}
+                >
+                  <p>
+                    <strong>Phrase:</strong> {item.pattern}
+                  </p>
+                  <p>
+                    <strong>Matched:</strong>{' '}
+                    {existsInText ? 'true' : 'false'}
+                  </p>
+                  <p>
+                    <strong>Pattern ID:</strong> {item.id}
+                  </p>
+                  <p>
+                    <strong>Category:</strong> {item.category}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </main>
     </>
   );
