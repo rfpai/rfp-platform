@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
@@ -62,17 +63,6 @@ export default function Custom404() {
     <div style={containerStyle}>
       <Head>
         <title>{isAr ? 'الصفحة غير موجودة' : 'Page Not Found'}</title>
-        {isAr ? (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap"
-            rel="stylesheet"
-          />
-        ) : (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
       </Head>
       <div style={cardStyle}>
         <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem' }}>
