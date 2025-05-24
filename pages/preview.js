@@ -1,42 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import RFPPreview from '@/components/RFPPreview';
 
 export default function PreviewPage() {
-  const rfpData = {
-    projectInfo:
-      'اسم المشروع: حملة إطلاق المنتج الجديد\nالجهة الطالبة: شركة الابتكار للتسويق\nرقم المرجع: 2024-01',
-    background:
-      'تسعى الشركة إلى توسيع حضورها في السوق المحلي بإطلاق منتج تقني يستهدف فئة الشباب. يأتي هذا الطلب للحصول على عروض من وكالات متخصصة لإدارة الحملة بالكامل وتحقيق أقصى انتشار ممكن.',
-    projectDescription:
-      'يتضمن المشروع إعداد خطة تسويق شاملة، إنتاج المحتوى الرقمي، وإدارة الإعلانات المدفوعة على المنصات الاجتماعية ومحركات البحث. يجب أن تعكس الحملة هوية العلامة التجارية وأن تبرز نقاط تميز المنتج.',
-    scopeOfWork:
-      'يشمل نطاق العمل تطوير الاستراتيجية، تصميم الإعلانات، إدارة حسابات التواصل الاجتماعي، وتنفيذ أنشطة العلاقات العامة ذات الصلة.',
-    targetAudience:
-      'الفئة المستهدفة هي الشباب من عمر 18 إلى 30 عاماً في المدن الرئيسية ممن يهتمون بالتقنية وأسلوب الحياة العصري.',
-    deliverables:
-      '1. خطة تسويق تفصيلية\n2. محتوى إعلاني بصري ونصي\n3. تقارير أداء شهرية\n4. ملخص ختامي للحملة',
-    timeline:
-      'بداية التنفيذ: 1 يونيو 2024\nانتهاء الحملة: 31 أغسطس 2024',
-    budget:
-      'الميزانية الإجمالية المقدرة تتراوح بين 150,000 و 200,000 ريال سعودي وتشمل تكاليف الإعلان والإنتاج.',
-    evaluationCriteria:
-      'سيتم تقييم العروض بناءً على خبرة الفريق، جودة الخطة التسويقية، القدرة على الابتكار، والالتزام بالجدول الزمني المقترح.',
-    submissionRequirements:
-      'يجب أن يتضمن العرض نبذة عن الوكالة، أمثلة لأعمال سابقة مشابهة، المنهجية المقترحة، والفريق الرئيسي الذي سيعمل على المشروع.',
-    questions:
-      'يمكن إرسال الاستفسارات حتى 10 مايو 2024 على البريد marketing@example.com وسيتم الرد خلال يومي عمل.',
-    attachments:
-      'مرفق مع هذا الطلب دليل الهوية البصرية للعلامة التجارية بالإضافة إلى ملخص عن المنتج.',
-  };
+  const router = useRouter();
+  const [rfpData, setRfpData] = useState(null);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    let data = null;
+
+    const fromQuery = router.query.rfp;
+    if (fromQuery) {
+      try {
+        data = JSON.parse(fromQuery);
+      } catch {
+        data = null;
+      }
+    } else if (router.state && router.state.rfpData) {
+      data = router.state.rfpData;
+    }
+
+    setRfpData(data);
+  }, [router]);
 
   return (
     <>
       <Head>
         <title>معاينة العرض</title>
       </Head>
-      <div className="min-h-screen bg-gray-50 p-4 flex justify-center">
-        <RFPPreview data={rfpData} />
+      <div className="min-h-screen bg-gray-50 p-4 flex justify-center items-start" dir="rtl">
+        {rfpData ? (
+          <RFPPreview data={rfpData} />
+        ) : (
+          <p className="text-gray-600 mt-10">لا توجد بيانات لعرض الوثيقة.</p>
+        )}
       </div>
     </>
   );
