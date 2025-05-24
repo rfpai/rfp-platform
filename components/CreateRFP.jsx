@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function CreateRFP() {
@@ -30,6 +30,16 @@ export default function CreateRFP() {
   const currentKey = questions[index].key;
 
   const rfpData = answers;
+
+  useEffect(() => {
+    if (completed) {
+      try {
+        localStorage.setItem("rfpData", JSON.stringify(rfpData));
+      } catch {
+        // Ignore write errors
+      }
+    }
+  }, [completed, rfpData]);
 
   const handlePreview = () => {
     router.push({
