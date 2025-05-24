@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
   const [language, setLanguage] = useState('en');
   const [text, setText] = useState('');
   const [domain, setDomain] = useState('');
@@ -12,6 +14,17 @@ export default function Home() {
   const [matchedCount, setMatchedCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const token = window.localStorage.getItem('loggedIn');
+    if (!token) {
+      router.replace('/login');
+    } else {
+      setLoggedIn(true);
+    }
+  }, [router]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -204,6 +217,26 @@ export default function Home() {
           >
             {language === 'en' ? 'العربية' : 'English'}
           </button>
+          {loggedIn && (
+            <button
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.localStorage.removeItem('loggedIn');
+                }
+                router.push('/login');
+              }}
+              style={{
+                marginInlineStart: '0.5rem',
+                border: '1px solid',
+                background: 'transparent',
+                borderRadius: '6px',
+                padding: '0.25rem 0.5rem',
+                cursor: 'pointer',
+              }}
+            >
+              Log out
+            </button>
+          )}
         </nav>
 
         <main style={cardStyle}>
