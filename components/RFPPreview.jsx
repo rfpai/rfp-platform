@@ -1,62 +1,74 @@
-import React from "react";
+"use client";
+import React, { useRef } from "react";
+import html2pdf from "html2pdf.js";
 import PropTypes from "prop-types";
 
 export default function RFPPreview({ data }) {
+  const contentRef = useRef();
+
   const downloadPdf = () => {
-    if (typeof window !== "undefined") {
-      window.print();
-    }
+    const element = contentRef.current;
+    const opt = {
+      margin: 0.5,
+      filename: "طلب_تقديم_عروض.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+    html2pdf().set(opt).from(element).save();
   };
 
   const Section = ({ title, content }) => (
     <section className="space-y-2">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      <p className="whitespace-pre-line text-gray-700">{content}</p>
+      <h2 className="text-xl font-semibold text-blue-800">{title}</h2>
+      <p className="whitespace-pre-line text-gray-800">{content}</p>
     </section>
   );
 
-Section.propTypes = {
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-};
+  Section.propTypes = {
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+  };
 
   return (
-    <div className="bg-white p-6 shadow rounded space-y-6 print:p-0 print:shadow-none print:bg-white">
-      <h1 className="text-2xl font-bold text-center mb-4">طلب تقديم عرض تسويقي</h1>
-      <Section title="معلومات المشروع" content={data.projectInfo} />
-      <Section title="الخلفية" content={data.background} />
-      <Section title="وصف المشروع" content={data.projectDescription} />
-      <Section title="نطاق العمل" content={data.scopeOfWork} />
-      <Section title="الجمهور المستهدف" content={data.targetAudience} />
-      <Section title="المخرجات المتوقعة" content={data.deliverables} />
-      <Section title="الجدول الزمني" content={data.timeline} />
-      <Section title="الميزانية" content={data.budget} />
-      <Section title="معايير التقييم" content={data.evaluationCriteria} />
-      <Section title="متطلبات التقديم" content={data.submissionRequirements} />
-      <Section title="الاستفسارات" content={data.questions} />
-      <Section title="المرفقات" content={data.attachments} />
-      <div className="text-center print:hidden">
-        <button onClick={downloadPdf} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
-          تحميل PDF
+    <div className="max-w-4xl mx-auto my-10 px-4">
+      <div
+        ref={contentRef}
+        className="bg-white p-6 shadow rounded space-y-6 print:p-0 print:shadow-none print:bg-white"
+        dir="rtl"
+      >
+        <h1 className="text-2xl font-bold text-center mb-6">
+          وثيقة طلب تقديم عروض (RFP)
+        </h1>
+
+        <Section title="١. معلومات المشروع" content={data.projectInfo} />
+        <Section title="٢. خلفية عن الجهة" content={data.background} />
+        <Section title="٣. وصف المشروع" content={data.projectDescription} />
+        <Section title="٤. نطاق العمل" content={data.scopeOfWork} />
+        <Section title="٥. الجمهور المستهدف" content={data.targetAudience} />
+        <Section title="٦. المخرجات المتوقعة" content={data.deliverables} />
+        <Section title="٧. الجدول الزمني" content={data.timeline} />
+        <Section title="٨. الميزانية" content={data.budget} />
+        <Section title="٩. معايير التقييم" content={data.evaluationCriteria} />
+        <Section
+          title="١٠. متطلبات تقديم العرض"
+          content={data.submissionRequirements}
+        />
+        <Section
+          title="١١. الأسئلة والاستفسارات"
+          content={data.questions}
+        />
+        <Section title="١٢. الملاحق والمرفقات" content={data.attachments} />
+      </div>
+
+      <div className="text-center mt-8">
+        <button
+          onClick={downloadPdf}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow"
+        >
+          تحميل كـ PDF
         </button>
       </div>
     </div>
   );
 }
-
-RFPPreview.propTypes = {
-  data: PropTypes.shape({
-    projectInfo: PropTypes.string.isRequired,
-    background: PropTypes.string.isRequired,
-    projectDescription: PropTypes.string.isRequired,
-    scopeOfWork: PropTypes.string.isRequired,
-    targetAudience: PropTypes.string.isRequired,
-    deliverables: PropTypes.string.isRequired,
-    timeline: PropTypes.string.isRequired,
-    budget: PropTypes.string.isRequired,
-    evaluationCriteria: PropTypes.string.isRequired,
-    submissionRequirements: PropTypes.string.isRequired,
-    questions: PropTypes.string.isRequired,
-    attachments: PropTypes.string.isRequired,
-  }).isRequired,
-};
