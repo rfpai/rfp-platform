@@ -1,0 +1,13 @@
+{
+  "greeting": "Welcome to RFP Platform",
+  "description": "Choose your service request form.",
+  "marketingTitle": "Marketing Request",
+  "marketingDescription": "Please fill out the marketing form below.",
+  "companyName": "Company Name",
+  "contactPerson": "Contact Person",
+  "requestDetails": "Request Details",
+  "submit": "Submit",
+  "submitted": "Your request has been submitted successfully!",
+  "prTitle": "PR Request",
+  "prDescription": "Please fill out the public relations request form below."
+}

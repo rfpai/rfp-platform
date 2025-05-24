@@ -1,0 +1,44 @@
+[
+  {
+    "id": "intro_marketing_1",
+    "category": "المقدمة",
+    "domain": "Marketing",
+    "language": "ar",
+    "pattern": "تسعى [اسم الجهة] إلى تنفيذ حملة تسويقية متكاملة بهدف تعزيز حضور العلامة التجارية ورفع التفاعل."
+  },
+  {
+    "id": "intro_pr_1",
+    "category": "المقدمة",
+    "domain": "Public Relations",
+    "language": "ar",
+    "pattern": "تهدف هذه المناقصة إلى تحسين الصورة الذهنية لـ [اسم الجهة] وتعزيز علاقتها بالجمهور."
+  },
+  {
+    "id": "audience_marketing_1",
+    "category": "الجمهور المستهدف",
+    "domain": "Marketing",
+    "language": "ar",
+    "pattern": "تستهدف الحملة العملاء المحتملين من الفئة العمرية 25-40 المهتمين بالتقنية والابتكار."
+  },
+  {
+    "id": "audience_pr_1",
+    "category": "الجمهور المستهدف",
+    "domain": "Public Relations",
+    "language": "ar",
+    "pattern": "تشمل الفئات المستهدفة الإعلاميين، والمؤثرين، والجهات الحكومية ذات العلاقة."
+  },
+  {
+    "id": "scope_marketing_1",
+    "category": "نطاق العمل",
+    "domain": "Marketing",
+    "language": "ar",
+    "pattern": "يشمل نطاق العمل إدارة الحملات الرقمية، وتصميم المحتوى، وتحليل الأداء."
+  },
+  {
+    "id": "scope_pr_1",
+    "category": "نطاق العمل",
+    "domain": "Public Relations",
+    "language": "ar",
+    "pattern": "يشمل نطاق العمل إعداد البيانات الصحفية، وتنظيم المؤتمرات، وبناء العلاقات الإعلامية."
+  }
+]
