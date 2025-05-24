@@ -3,6 +3,30 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import RFPPreview from "@/components/RFPPreview";
 
+const templates = {
+  projectInfo: (v) => `يتضمن هذا القسم معلومات أساسية عن المشروع: ${v}`,
+  background: (v) => `توضح الخلفية ماهية الجهة صاحبة الطلب وخبراتها: ${v}`,
+  projectDescription: (v) => `وصف تفصيلي للمشروع وأهدافه الرئيسية: ${v}`,
+  scopeOfWork: (v) => `نطاق العمل المتوقع من الوكالة يشمل: ${v}`,
+  targetAudience: (v) => `الفئة المستهدفة من هذا المشروع هي: ${v}`,
+  deliverables: (v) => `المخرجات المتوقعة بنهاية المشروع تتضمن: ${v}`,
+  timeline: (v) => `الجدول الزمني المقترح لتنفيذ المشروع هو: ${v}`,
+  budget: (v) => `الميزانية التقديرية للمشروع: ${v}`,
+  evaluationCriteria: (v) => `سيتم تقييم العروض بناءً على المعايير التالية: ${v}`,
+  submissionRequirements: (v) => `يجب تقديم العروض وفق المتطلبات التالية: ${v}`,
+  questions: (v) => `الاستفسارات أو الأسئلة المطروحة من قبل الجهة: ${v}`,
+  attachments: (v) => `الملاحق والمرفقات الداعمة للطلب: ${v}`,
+};
+
+const formatRfp = (data) => {
+  const formatted = {};
+  Object.keys(templates).forEach((key) => {
+    const val = data?.[key] || "";
+    formatted[key] = templates[key](val);
+  });
+  return formatted;
+};
+
 export default function PreviewPage() {
   const router = useRouter();
   const [rfpData, setRfpData] = useState(null);
@@ -16,22 +40,27 @@ export default function PreviewPage() {
     if (router.query.rfp) {
       try {
         data = JSON.parse(router.query.rfp);
-        setRfpData(data);
         localStorage.setItem("rfpData", JSON.stringify(data));
       } catch {
         // إذا فشل التحليل يتم تجاهله
+        data = null;
       }
-    } else {
+    }
+
+    if (!data) {
       // ثانيًا: محاولة تحميلها من localStorage
       const saved = localStorage.getItem("rfpData");
       if (saved) {
         try {
           data = JSON.parse(saved);
-          setRfpData(data);
         } catch {
-          // تجاهل في حال فشل التحليل
+          data = null;
         }
       }
+    }
+
+    if (data) {
+      setRfpData(formatRfp(data));
     }
   }, [router.isReady, router.query]);
 
