@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import ConversationView from "@/components/ConversationView";
 
 export default function CreateRFP() {
   const router = useRouter();
@@ -23,47 +24,81 @@ export default function CreateRFP() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content: questions[0].text,
+      timestamp: Date.now(),
+    },
+  ]);
+  const [redirecting, setRedirecting] = useState(false);
 
-  const handleNext = (e) => {
+  const handleSend = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
+
     const key = questions[index].key;
     const value = input.trim();
     const updated = { ...answers, [key]: value };
     setAnswers(updated);
+
+    const userMessage = {
+      role: "user",
+      content: value,
+      timestamp: Date.now(),
+    };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
     if (index < questions.length - 1) {
+      const nextQ = questions[index + 1].text;
+      const assistantMessage = {
+        role: "assistant",
+        content: nextQ,
+        timestamp: Date.now(),
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
       setIndex(index + 1);
     } else {
       try {
         localStorage.setItem("rfpData", JSON.stringify(updated));
       } catch {
-        // ignore
+        // ignore errors
       }
-      router.push("/preview");
+
+      const assistantMessage = {
+        role: "assistant",
+        content: "جاري التوجيه إلى صفحة المعاينة...",
+        timestamp: Date.now(),
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+      setRedirecting(true);
+      setTimeout(() => {
+        router.push("/preview");
+      }, 800);
     }
   };
 
   return (
-    <div dir="rtl" className="max-w-xl mx-auto p-4">
-      <div className="bg-white p-6 rounded shadow space-y-4">
-        <div className="font-semibold text-lg">{questions[index].text}</div>
-        <form onSubmit={handleNext} className="space-y-4">
-          <textarea
-            className="w-full border rounded p-3 min-h-[120px] resize-y"
+    <div dir="rtl" className="max-w-xl mx-auto p-4 space-y-4">
+      <ConversationView messages={messages} />
+      {!redirecting && (
+        <form onSubmit={handleSend} className="flex gap-2">
+          <input
+            type="text"
+            className="flex-1 border rounded px-3 py-2"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="اكتب إجابتك هنا"
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded self-start"
+            className="bg-blue-600 text-white px-4 py-2 rounded"
           >
-            {index === questions.length - 1 ? "إنهاء" : "التالي"}
+            إرسال
           </button>
         </form>
-      </div>
+      )}
     </div>
   );
 }
