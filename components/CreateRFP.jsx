@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function CreateRFP() {
+  const router = useRouter();
   const questions = [
     { key: "projectInfo", text: "ما هي معلومات المشروع؟" },
     { key: "background", text: "ما الخلفية عن الجهة؟" },
@@ -27,6 +29,15 @@ export default function CreateRFP() {
 
   const currentKey = questions[index].key;
 
+  const rfpData = answers;
+
+  const handlePreview = () => {
+    router.push({
+      pathname: "/preview",
+      query: { rfp: JSON.stringify(rfpData) },
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -49,7 +60,6 @@ export default function CreateRFP() {
     }
   };
 
-  const rfpData = answers;
 
   return (
     <div className="max-w-xl mx-auto p-4 space-y-4" dir="rtl">
@@ -94,10 +104,10 @@ export default function CreateRFP() {
             {JSON.stringify(rfpData, null, 2)}
           </pre>
           <button
-            className="bg-green-600 text-white px-4 py-2 rounded"
-            onClick={() => console.log(rfpData)}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
+            onClick={handlePreview}
           >
-            عرض الوثيقة
+            معاينة وثيقة RFP
           </button>
         </div>
       )}
