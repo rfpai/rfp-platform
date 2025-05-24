@@ -2,24 +2,36 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import ConversationView from "@/components/ConversationView";
+import { rfpHints } from "@/data/assistant/rfpHints";
 
 export default function CreateRFP() {
   const router = useRouter();
 
-  const questions = [
-    { key: "projectInfo", text: "ما هي معلومات المشروع؟" },
-    { key: "background", text: "ما هي خلفية الجهة؟" },
-    { key: "projectDescription", text: "ما هو وصف المشروع؟" },
-    { key: "scopeOfWork", text: "ما نطاق العمل؟" },
-    { key: "targetAudience", text: "من هو الجمهور المستهدف؟" },
-    { key: "deliverables", text: "ما المخرجات المتوقعة؟" },
-    { key: "timeline", text: "ما الجدول الزمني؟" },
-    { key: "budget", text: "ما الميزانية؟" },
-    { key: "evaluationCriteria", text: "ما معايير التقييم؟" },
-    { key: "submissionRequirements", text: "ما متطلبات تقديم العرض؟" },
-    { key: "questions", text: "هل لديك أي أسئلة أو استفسارات؟" },
-    { key: "attachments", text: "اذكر الملاحق أو المرفقات." },
+  const questionKeys = [
+    "projectInfo",
+    "background",
+    "projectDescription",
+    "scopeOfWork",
+    "targetAudience",
+    "deliverables",
+    "timeline",
+    "budget",
+    "evaluationCriteria",
+    "submissionRequirements",
+    "questions",
+    "attachments",
   ];
+
+  const buildHint = (key) => {
+    const hint = rfpHints[key] || {};
+    return {
+      prompt: hint.prompt,
+      help: hint.help,
+      intent: hint.intent,
+      marketing: hint.sectorExamples?.marketing,
+      pr: hint.sectorExamples?.pr,
+    };
+  };
 
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -27,7 +39,7 @@ export default function CreateRFP() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: questions[0].text,
+      content: buildHint(questionKeys[0]),
       timestamp: Date.now(),
     },
   ]);
@@ -37,7 +49,7 @@ export default function CreateRFP() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const key = questions[index].key;
+    const key = questionKeys[index];
     const value = input.trim();
     const updated = { ...answers, [key]: value };
     setAnswers(updated);
@@ -50,11 +62,11 @@ export default function CreateRFP() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    if (index < questions.length - 1) {
-      const nextQ = questions[index + 1].text;
+    if (index < questionKeys.length - 1) {
+      const nextKey = questionKeys[index + 1];
       const assistantMessage = {
         role: "assistant",
-        content: nextQ,
+        content: buildHint(nextKey),
         timestamp: Date.now(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
