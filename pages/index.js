@@ -123,9 +123,30 @@ export default function Home() {
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.5rem',
           }}
         >
-          <h1 style={{ margin: 0, fontSize: '1.25rem', flex: 1 }}>{t.title}</h1>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: '1.25rem',
+              whiteSpace: 'nowrap',
+              flex: 1,
+            }}
+          >
+            {t.title}
+          </h1>
+          <a
+            href="/landing"
+            style={{
+              marginRight: language === 'ar' ? 0 : '0.5rem',
+              marginLeft: language === 'ar' ? '0.5rem' : 0,
+              textDecoration: 'underline',
+            }}
+          >
+            {language === 'ar' ? 'الواجهة' : 'Landing'}
+          </a>
           <button
             onClick={() => setDarkMode(!darkMode)}
             style={{
