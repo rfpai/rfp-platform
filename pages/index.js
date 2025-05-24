@@ -10,7 +10,6 @@ export default function Home() {
   const [category, setCategory] = useState('');
   const [results, setResults] = useState(null);
   const [sentences, setSentences] = useState([]);
-  const [summary, setSummary] = useState('');
   const [matchedCount, setMatchedCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -116,7 +115,6 @@ export default function Home() {
       if (matched) count += 1;
     });
     setMatchedCount(count);
-    setSummary(lines.join('\n'));
     setLoading(false);
   };
 

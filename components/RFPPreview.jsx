@@ -3,7 +3,8 @@ import React, { useRef } from "react";
 import html2pdf from "html2pdf.js";
 import PropTypes from "prop-types";
 
-export default function RFPPreview({ data }) {
+export default function RFPPreview({ data = null }) {
+  if (!data) return null;
   const contentRef = useRef();
 
   const downloadPdf = () => {
