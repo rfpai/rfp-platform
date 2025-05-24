@@ -48,6 +48,15 @@ export default function PreviewPage() {
           لا توجد بيانات لعرض الوثيقة.
         </div>
       )}
+
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={() => router.push("/create-rfp")}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+        >
+          العودة للتعديل
+        </button>
+      </div>
     </div>
   );
 }
