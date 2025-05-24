@@ -1,16 +1,12 @@
 import React from 'react';
-import Head from 'next/head';
 import CreateRFP from '@/components/CreateRFP';
-
 export default function CreateRFPPage() {
   return (
-    <>
-      <Head>
-        <title>إنشاء وثيقة طلب تقديم عروض</title>
-      </Head>
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4" dir="rtl">
-        <CreateRFP />
-      </div>
-    </>
+    <div className="min-h-screen bg-gray-50 p-8" dir="rtl">
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        إنشاء وثيقة طلب تقديم عروض (RFP)
+      </h1>
+      <CreateRFP />
+    </div>
   );
 }
