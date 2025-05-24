@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import flow from "@/data/ai/smart_conversation_flow.json";
+import flow from "../data/ai/smart_conversation_flow.json";
 
 export default function RFPChatFlow() {
   const [sectionIndex, setSectionIndex] = useState(0);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import RFPPreview from "@/components/RFPPreview";
+import RFPPreview from "../components/RFPPreview";
 
 const templates = {
   projectInfo: (v) => `يتضمن هذا القسم معلومات أساسية عن المشروع: ${v}`,
@@ -33,38 +33,10 @@ export default function PreviewPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!router.isReady) return;
-
-    let data = null;
-
-    // أولاً: جلب البيانات من query إذا كانت موجودة
-    if (router.query.rfp) {
-      try {
-        data = JSON.parse(router.query.rfp);
-        localStorage.setItem("rfpData", JSON.stringify(data));
-      } catch {
-        // إذا فشل التحليل يتم تجاهله
-        data = null;
-      }
-    }
-
-    if (!data) {
-      // ثانيًا: محاولة تحميلها من localStorage
-      const saved = localStorage.getItem("rfpData");
-      if (saved) {
-        try {
-          data = JSON.parse(saved);
-        } catch {
-          data = null;
-        }
-      }
-    }
-
-    if (data) {
-      setRfpData(formatRfp(data));
-    }
+    const stored = localStorage.getItem("rfpData");
+    if (stored) setRfpData(formatRfp(JSON.parse(stored)));
     setLoading(false);
-  }, [router.isReady, router.query]);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6" dir="rtl">

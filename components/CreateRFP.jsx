@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import ConversationView from "@/components/ConversationView";
-import { rfpHints } from "@/data/assistant/rfpHints";
+import ConversationView from "./ConversationView";
+import { rfpHints } from "../data/assistant/rfpHints";
 
 export default function CreateRFP() {
   const router = useRouter();
