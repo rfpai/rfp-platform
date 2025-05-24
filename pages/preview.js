@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import RFPPreview from "@/components/RFPPreview";
@@ -11,41 +11,43 @@ export default function PreviewPage() {
     if (!router.isReady) return;
 
     let data = null;
+
+    // أولاً: جلب البيانات من query إذا كانت موجودة
     if (router.query.rfp) {
       try {
         data = JSON.parse(router.query.rfp);
         setRfpData(data);
         localStorage.setItem("rfpData", JSON.stringify(data));
       } catch {
-        // ignore invalid data
+        // إذا فشل التحليل يتم تجاهله
       }
     } else {
+      // ثانيًا: محاولة تحميلها من localStorage
       const saved = localStorage.getItem("rfpData");
       if (saved) {
         try {
           data = JSON.parse(saved);
           setRfpData(data);
         } catch {
-          // ignore invalid saved data
+          // تجاهل في حال فشل التحليل
         }
       }
     }
   }, [router.isReady, router.query]);
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50 p-6" dir="rtl">
       <Head>
-        <title>معاينة العرض</title>
+        <title>معاينة وثيقة RFP</title>
       </Head>
-      <div className="min-h-screen bg-gray-50 p-4 flex justify-center">
-        {rfpData ? (
-          <RFPPreview data={rfpData} />
-        ) : (
-          <p dir="rtl" className="text-gray-700">
-            لا توجد بيانات لعرضها.
-          </p>
-        )}
-      </div>
-    </>
+
+      {rfpData ? (
+        <RFPPreview data={rfpData} />
+      ) : (
+        <div className="text-center text-gray-600 mt-20">
+          لا توجد بيانات لعرض الوثيقة.
+        </div>
+      )}
+    </div>
   );
 }
