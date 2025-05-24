@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import RFPChatFlow from '@/components/RFPChatFlow';
+import RFPChatFlow from '../components/RFPChatFlow';
 
 export default function ChatFlowPage() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateRFP from '@/components/CreateRFP';
+import CreateRFP from '../components/CreateRFP';
 
 export default function CreateRFPPage() {
   return (

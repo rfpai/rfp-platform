@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import ConversationView from "@/components/ConversationView";
+import ConversationView from "./ConversationView";
 
 export default function RFPAssistant() {
   const [messages, setMessages] = useState([]);
