@@ -30,6 +30,7 @@ const formatRfp = (data) => {
 export default function PreviewPage() {
   const router = useRouter();
   const [rfpData, setRfpData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -62,6 +63,7 @@ export default function PreviewPage() {
     if (data) {
       setRfpData(formatRfp(data));
     }
+    setLoading(false);
   }, [router.isReady, router.query]);
 
   return (
@@ -70,7 +72,9 @@ export default function PreviewPage() {
         <title>معاينة وثيقة RFP</title>
       </Head>
 
-      {rfpData ? (
+      {loading ? (
+        <div className="text-center text-gray-600 mt-20">جاري التحميل...</div>
+      ) : rfpData ? (
         <RFPPreview data={rfpData} />
       ) : (
         <div className="text-center text-gray-600 mt-20">
