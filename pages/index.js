@@ -147,9 +147,30 @@ export default function Home() {
             padding: '0.75rem 1rem',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.5rem',
           }}
         >
-          <h1 style={{ flex: 1, margin: 0, fontSize: '1.25rem' }}>{t.title}</h1>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: '1.25rem',
+              whiteSpace: 'nowrap',
+              flex: 1,
+            }}
+          >
+            {t.title}
+          </h1>
+          <a
+            href="/landing"
+            style={{
+              marginRight: language === 'ar' ? 0 : '0.5rem',
+              marginLeft: language === 'ar' ? '0.5rem' : 0,
+              textDecoration: 'underline',
+            }}
+          >
+            {language === 'ar' ? 'الواجهة الرئيسية' : 'Landing'}
+          </a>
           <button
             onClick={() => setDarkMode(!darkMode)}
             style={{
@@ -184,6 +205,7 @@ export default function Home() {
             {language === 'en' ? 'العربية' : 'English'}
           </button>
         </nav>
+
         <main style={cardStyle}>
           <form
             onSubmit={handleSubmit}
