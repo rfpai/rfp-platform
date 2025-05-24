@@ -38,15 +38,10 @@ export default function CreateRFP() {
       } catch {
         // Ignore write errors
       }
+      router.push("/preview");
     }
-  }, [completed, rfpData]);
+  }, [completed, rfpData, router]);
 
-  const handlePreview = () => {
-    router.push({
-      pathname: "/preview",
-      query: { rfp: JSON.stringify(rfpData) },
-    });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,17 +104,7 @@ export default function CreateRFP() {
       )}
 
       {completed && (
-        <div className="space-y-4">
-          <pre className="bg-gray-100 p-3 rounded text-xs whitespace-pre-wrap">
-            {JSON.stringify(rfpData, null, 2)}
-          </pre>
-          <button
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
-            onClick={handlePreview}
-          >
-            معاينة وثيقة RFP
-          </button>
-        </div>
+        <div className="text-center text-gray-600">جارٍ الانتقال للمعاينة...</div>
       )}
     </div>
   );
