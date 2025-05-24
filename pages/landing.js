@@ -31,13 +31,22 @@ export default function Landing() {
       <div style={{ padding: '2rem', fontFamily: 'Inter, sans-serif' }}>
         <nav style={{ marginBottom: '1rem' }}>
           {loggedIn && (
-            <button onClick={handleLogout} style={{ border: '1px solid', background: 'transparent', borderRadius: '6px', padding: '0.25rem 0.5rem', cursor: 'pointer' }}>
-              Log out
+            <button
+              onClick={handleLogout}
+              style={{
+                border: '1px solid',
+                background: 'transparent',
+                borderRadius: '6px',
+                padding: '0.25rem 0.5rem',
+                cursor: 'pointer',
+              }}
+            >
+              Logout
             </button>
           )}
         </nav>
-        <h1>Landing Page</h1>
-        <p>Welcome to the landing page.</p>
+        <h1>Welcome to the Landing Page 🎉</h1>
+        <p>This page is protected. Only logged-in users can see this.</p>
       </div>
     </>
   );
