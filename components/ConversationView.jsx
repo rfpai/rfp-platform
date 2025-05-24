@@ -25,20 +25,19 @@ export default function ConversationView({ messages = [], isLoading = false }) {
             msg.content
           ) : (
             <div className="space-y-1">
-              <p className="font-semibold text-gray-800">{msg.content.prompt}</p>
+              <p className="font-semibold text-blue-700">{msg.content.prompt}</p>
               {msg.content.help && (
-                <p className="text-gray-600 text-sm">{msg.content.help}</p>
+                <p className="text-gray-700 text-sm">{msg.content.help}</p>
               )}
               {msg.content.intent && (
                 <p className="text-xs text-gray-500">🎯 {msg.content.intent}</p>
               )}
-              {msg.content.marketing && (
-                <p className="text-xs text-green-700">
-                  {msg.content.marketing}
-                </p>
-              )}
-              {msg.content.pr && (
-                <p className="text-xs text-purple-700">{msg.content.pr}</p>
+              {(msg.content.marketing || msg.content.pr) && (
+                <div className="text-xs text-gray-600 space-y-0.5">
+                  <p className="font-medium">🧠 مثال:</p>
+                  {msg.content.marketing && <p>- {msg.content.marketing}</p>}
+                  {msg.content.pr && <p>- {msg.content.pr}</p>}
+                </div>
               )}
             </div>
           )}
