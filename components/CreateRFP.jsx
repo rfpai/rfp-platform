@@ -100,26 +100,28 @@ export default function CreateRFP() {
   };
 
   return (
-    <div dir="rtl" className="max-w-xl mx-auto p-4 space-y-4">
-      <ConversationView messages={messages} isLoading={isLoading} />
-      {!redirecting && (
-        <form onSubmit={handleSend} className="flex gap-2">
-          <input
-            type="text"
-            className="flex-1 border rounded px-3 py-2"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="اكتب إجابتك هنا"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-            disabled={isLoading}
-          >
-            إرسال
-          </button>
-        </form>
-      )}
+    <div dir="rtl" className="max-w-xl mx-auto p-4">
+      <div className="bg-white p-6 rounded-2xl shadow-md space-y-4">
+        <ConversationView messages={messages} isLoading={isLoading} />
+        {!redirecting && (
+          <form onSubmit={handleSend} className="flex gap-2 pt-4 border-t">
+            <input
+              type="text"
+              className="flex-1 border rounded px-3 py-2"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="اكتب إجابتك هنا"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md shadow"
+              disabled={isLoading}
+            >
+              التالي
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
