@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import RFPPreview from "../components/RFPPreview";
+import html2pdf from "html2pdf.js";
 
 const templates = {
   projectInfo: (v) => `يتضمن هذا القسم معلومات أساسية عن المشروع: ${v}`,
@@ -31,6 +32,12 @@ export default function PreviewPage() {
   const router = useRouter();
   const [rfpData, setRfpData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const contentRef = useRef(null);
+
+  const downloadPdf = () => {
+    if (!contentRef.current) return;
+    html2pdf().from(contentRef.current).save("rfp.pdf");
+  };
 
   useEffect(() => {
     const stored = localStorage.getItem("rfpData");
@@ -39,7 +46,7 @@ export default function PreviewPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6" dir="rtl">
+    <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center" dir="rtl">
       <Head>
         <title>معاينة وثيقة RFP</title>
       </Head>
@@ -47,10 +54,21 @@ export default function PreviewPage() {
       {loading ? (
         <div className="text-center text-gray-600 mt-20">جاري التحميل...</div>
       ) : rfpData ? (
-        <RFPPreview data={rfpData} />
+        <RFPPreview data={rfpData} contentRef={contentRef} />
       ) : (
         <div className="text-center text-gray-600 mt-20">
           لا توجد بيانات لعرض الوثيقة.
+        </div>
+      )}
+
+      {rfpData && (
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={downloadPdf}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow"
+          >
+            تحميل كـ PDF
+          </button>
         </div>
       )}
 

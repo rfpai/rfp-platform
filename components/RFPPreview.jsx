@@ -1,27 +1,21 @@
 "use client";
-import React, { useRef } from "react";
-import html2pdf from "html2pdf.js";
+import React from "react";
 import PropTypes from "prop-types";
 
-export default function RFPPreview({ data = null }) {
+export default function RFPPreview({ data = null, contentRef }) {
   if (!data) {
     return (
       <p className="text-center text-gray-600 mt-10">لا توجد بيانات لعرضها</p>
     );
   }
-  const contentRef = useRef();
-
-  const downloadPdf = () => {
-    if (!contentRef.current) return;
-    html2pdf().from(contentRef.current).save("rfp.pdf");
-  };
-
   const Section = ({ title, content }) => (
-    <section className="space-y-2">
-      <h2 className="text-xl font-semibold text-blue-800">{title}</h2>
-      <p className="whitespace-pre-line text-gray-800">
-        {content || "لا توجد بيانات"}
-      </p>
+    <section className="space-y-2 pb-4 border-b last:border-b-0">
+      <h2 className="font-semibold text-blue-700">{title}</h2>
+      {content ? (
+        <p className="whitespace-pre-line text-gray-800">{content}</p>
+      ) : (
+        <p className="text-gray-500 italic">لا توجد بيانات</p>
+      )}
     </section>
   );
 
@@ -34,7 +28,7 @@ export default function RFPPreview({ data = null }) {
     <div className="max-w-4xl mx-auto my-10 px-4">
       <div
         ref={contentRef}
-        className="bg-white p-6 shadow rounded space-y-6 print:p-0 print:shadow-none print:bg-white"
+        className="bg-white p-6 rounded-2xl shadow-md space-y-6 print:p-0 print:shadow-none print:bg-white"
         dir="rtl"
       >
         <h1 className="text-2xl font-bold text-center mb-6">
@@ -59,15 +53,6 @@ export default function RFPPreview({ data = null }) {
           content={data.questions}
         />
         <Section title="١٢. الملاحق والمرفقات" content={data.attachments} />
-      </div>
-
-      <div className="text-center mt-8">
-        <button
-          onClick={downloadPdf}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow"
-        >
-          تحميل كـ PDF
-        </button>
       </div>
     </div>
   );
