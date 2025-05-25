@@ -89,14 +89,17 @@ export default function CreateRFP() {
   };
 
   return (
-    <div dir="rtl" className="max-w-xl mx-auto p-4">
-      <div className="bg-white p-6 rounded-2xl shadow-md space-y-4">
+    <div dir="rtl" className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
+        <header className="sticky top-0 bg-white pb-2 mb-4 border-b shadow-sm">
+          <h2 className="text-lg font-bold text-right">📋 إنشاء وثيقة طلب تقديم عروض (RFP)</h2>
+        </header>
         <ConversationView messages={messages} isLoading={isLoading} />
         {!redirecting && (
           <form onSubmit={handleSend} className="flex gap-2 pt-4 border-t">
             {flow[index]?.type === "textarea" ? (
               <textarea
-                className="flex-1 border rounded px-3 py-2"
+                className="w-full border px-4 py-2 rounded focus:outline-none focus:ring placeholder-gray-400 flex-1"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="اكتب إجابتك هنا"
@@ -105,7 +108,7 @@ export default function CreateRFP() {
             ) : (
               <input
                 type="text"
-                className="flex-1 border rounded px-3 py-2"
+                className="w-full border px-4 py-2 rounded focus:outline-none focus:ring placeholder-gray-400 flex-1"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="اكتب إجابتك هنا"
@@ -113,7 +116,7 @@ export default function CreateRFP() {
             )}
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md shadow"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
               disabled={isLoading}
             >
               التالي
