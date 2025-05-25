@@ -32,11 +32,18 @@ export default function ConversationView({ messages = [], isLoading = false }) {
               {msg.content.intent && (
                 <p className="text-xs text-gray-500">🎯 {msg.content.intent}</p>
               )}
-              {(msg.content.marketing || msg.content.pr) && (
+              {msg.content.example && (
                 <div className="text-xs text-gray-600 space-y-0.5">
-                  <p className="font-medium">🧠 مثال:</p>
-                  {msg.content.marketing && <p>- {msg.content.marketing}</p>}
-                  {msg.content.pr && <p>- {msg.content.pr}</p>}
+                  <p className="font-medium">🧠 مثال مقترح:</p>
+                  {Array.isArray(msg.content.example) ? (
+                    <ul className="list-disc pl-4">
+                      {msg.content.example.map((s, i) => (
+                        <li key={i}>{s}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{msg.content.example}</p>
+                  )}
                 </div>
               )}
             </div>

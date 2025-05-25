@@ -1,0 +1,12 @@
+{
+  "marketing": {
+    "experience": 0.4,
+    "creativity": 0.3,
+    "cost": 0.3
+  },
+  "pr": {
+    "mediaNetwork": 0.5,
+    "caseStudies": 0.2,
+    "cost": 0.3
+  }
+}
