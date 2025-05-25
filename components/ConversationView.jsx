@@ -8,14 +8,14 @@ export default function ConversationView({ messages = [], isLoading = false }) {
     });
 
   return (
-    <div className="space-y-3 bg-gray-50 p-4 rounded border">
+    <div className="space-y-3">
       {messages.map((msg, index) => (
         <div
           key={index}
-          className={`p-3 rounded-md shadow-sm text-sm whitespace-pre-wrap ${
+          className={`mb-4 p-4 rounded-xl shadow text-sm whitespace-pre-wrap ${
             msg.role === "user"
-              ? "bg-white text-right border-r-4 border-blue-500"
-              : "bg-blue-100 text-left border-l-4 border-gray-400 fade-in"
+              ? "bg-blue-50 text-right"
+              : "bg-gray-100 text-right fade-in"
           }`}
         >
           <div className="text-xs text-gray-500 mb-1">
