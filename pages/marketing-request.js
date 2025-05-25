@@ -3,14 +3,31 @@ import { useRouter } from "next/router";
 
 export default function MarketingRequest() {
   const router = useRouter();
-  const [companyName, setCompanyName] = useState("");
-  const [contactPerson, setContactPerson] = useState("");
-  const [projectTitle, setProjectTitle] = useState("");
-  const [requestDetails, setRequestDetails] = useState("");
+
+  const translations = {
+    companyName: "اسم الشركة",
+    contactPerson: "الشخص المسؤول",
+    projectTitle: "عنوان المشروع",
+    requestDetails: "تفاصيل الطلب",
+    submit: "إرسال الطلب",
+  };
+  const t = (key) => translations[key] || key;
+
+  const [form, setForm] = useState({
+    companyName: "",
+    contactPerson: "",
+    projectTitle: "",
+    requestDetails: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { companyName, contactPerson, projectTitle, requestDetails };
+    const data = { ...form };
     try {
       await fetch("/api/create-rfp", {
         method: "POST",
@@ -31,45 +48,49 @@ export default function MarketingRequest() {
         className="bg-white rounded-xl shadow-md p-6 space-y-4 w-full max-w-lg"
       >
         <div>
-          <label className="block mb-1">اسم الشركة</label>
+          <label className="block mb-1">{t("companyName")}</label>
           <input
             type="text"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="اسم الشركة"
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="companyName"
+            value={form.companyName}
+            onChange={handleChange}
+            placeholder={t("companyName")}
+            className="w-full border border-gray-300 rounded px-4 py-2"
             required
           />
         </div>
         <div>
-          <label className="block mb-1">الشخص المسؤول</label>
+          <label className="block mb-1">{t("contactPerson")}</label>
           <input
             type="text"
-            value={contactPerson}
-            onChange={(e) => setContactPerson(e.target.value)}
-            placeholder="الشخص المسؤول"
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="contactPerson"
+            value={form.contactPerson}
+            onChange={handleChange}
+            placeholder={t("contactPerson")}
+            className="w-full border border-gray-300 rounded px-4 py-2"
             required
           />
         </div>
         <div>
-          <label className="block mb-1">عنوان المشروع</label>
+          <label className="block mb-1">{t("projectTitle")}</label>
           <input
             type="text"
-            value={projectTitle}
-            onChange={(e) => setProjectTitle(e.target.value)}
-            placeholder="عنوان المشروع"
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="projectTitle"
+            value={form.projectTitle}
+            onChange={handleChange}
+            placeholder={t("projectTitle")}
+            className="w-full border border-gray-300 rounded px-4 py-2"
             required
           />
         </div>
         <div>
-          <label className="block mb-1">تفاصيل الطلب</label>
+          <label className="block mb-1">{t("requestDetails")}</label>
           <textarea
-            value={requestDetails}
-            onChange={(e) => setRequestDetails(e.target.value)}
-            placeholder="تفاصيل الطلب"
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            name="requestDetails"
+            value={form.requestDetails}
+            onChange={handleChange}
+            placeholder={t("requestDetails")}
+            className="w-full border border-gray-300 rounded px-4 py-2"
             rows="4"
             required
           />
@@ -78,7 +99,7 @@ export default function MarketingRequest() {
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full"
         >
-          إرسال الطلب
+          {t("submit")}
         </button>
       </form>
     </div>
