@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+// Use a relative import since aliasing via `@` is not configured
 import RFPPreview from "../components/RFPPreview";
 import html2pdf from "html2pdf.js";
 
