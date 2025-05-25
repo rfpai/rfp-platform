@@ -1,21 +1,27 @@
 "use client";
 import React, { useRef } from "react";
-// Use browser print dialog for PDF export to avoid external dependencies
+import html2pdf from "html2pdf.js";
 import PropTypes from "prop-types";
 
 export default function RFPPreview({ data = null }) {
-  if (!data) return null;
+  if (!data) {
+    return (
+      <p className="text-center text-gray-600 mt-10">لا توجد بيانات لعرضها</p>
+    );
+  }
   const contentRef = useRef();
 
   const downloadPdf = () => {
-    // Fallback to browser print dialog for PDF export
-    window.print();
+    if (!contentRef.current) return;
+    html2pdf().from(contentRef.current).save("rfp.pdf");
   };
 
   const Section = ({ title, content }) => (
     <section className="space-y-2">
       <h2 className="text-xl font-semibold text-blue-800">{title}</h2>
-      <p className="whitespace-pre-line text-gray-800">{content}</p>
+      <p className="whitespace-pre-line text-gray-800">
+        {content || "لا توجد بيانات"}
+      </p>
     </section>
   );
 
