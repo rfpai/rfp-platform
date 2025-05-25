@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import html2pdf from "html2pdf.js";
+// Use browser print dialog for PDF export to avoid external dependencies
 import PropTypes from "prop-types";
 
 export default function RFPPreview({ data = null }) {
@@ -8,15 +8,8 @@ export default function RFPPreview({ data = null }) {
   const contentRef = useRef();
 
   const downloadPdf = () => {
-    const element = contentRef.current;
-    const opt = {
-      margin: 0.5,
-      filename: "طلب_تقديم_عروض.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
-    html2pdf().set(opt).from(element).save();
+    // Fallback to browser print dialog for PDF export
+    window.print();
   };
 
   const Section = ({ title, content }) => (
